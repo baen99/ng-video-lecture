@@ -7,6 +7,7 @@ import sys
 batch_size = 64 # how many independent sequences will we process in parallel?
 block_size = 256 # what is the maximum context length for predictions?
 max_iters = 5000
+max_new_tokens = 5000 # how many new tokens are being generated?
 eval_interval = 500
 learning_rate = 3e-4
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
@@ -24,6 +25,7 @@ try:
     inp = sys.argv[1]
 except IndexError:
     inp = 'input.txt'
+print(inp)
 with open(inp, 'r', encoding='utf-8') as f:
     text = f.read()
 
@@ -226,5 +228,5 @@ for iter in range(max_iters):
 
 # generate from the model
 context = torch.zeros((1, 1), dtype=torch.long, device=device)
-print(decode(m.generate(context, max_new_tokens=5000)[0].tolist()))
+print(decode(m.generate(context, max_new_tokens=max_new_tokens)[0].tolist()))
 #open('more.txt', 'w').write(decode(m.generate(context, max_new_tokens=10000)[0].tolist()))
